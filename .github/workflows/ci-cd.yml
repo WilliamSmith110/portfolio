@@ -19,8 +19,8 @@ jobs:
       with:
         node-version: "20"
         cache: 'pnpm'
-    - name: Enable pnpm
-      run: corepack enable pnpm   # specify version if needed
+    - name: Install PNPM
+      run: npm i -g pnpm
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
       
@@ -48,14 +48,16 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
-        cache: 'npm'
+        node-version: '20'
+        cache: 'pnpm'
         
+    - name: Install PNPM
+      run: npm i -g pnpm
     - name: Install dependencies
-      run: npm ci
+      run: pnpm install --frozen-lockfile
       
     - name: Build application
-      run: npm run build
+      run: pnpm run build
       
     - name: Deploy to Vercel
       uses: amondnet/vercel-action@v25
