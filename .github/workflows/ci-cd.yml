@@ -20,7 +20,7 @@ jobs:
         node-version: 20
         cache: 'pnpm'
     - name: Setup pnpm
-      uses: actions/setup-pnpm@v2
+      uses: pnpm/action-setup@v4
       with:
         version: 'latest'    # specify version if needed
     - name: Install dependencies
