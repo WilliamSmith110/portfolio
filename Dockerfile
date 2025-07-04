@@ -1,48 +1,31 @@
-FROM node:18-alpine AS base
-
-# Install libc6-compat and create app directory with proper permissions
-RUN apk add --no-cache libc6-compat && mkdir -p /app && chown -R nextjs:nodejs /app
+# Build stage
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Dependencies stage
-FROM base AS deps
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
-RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci --only=production; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i --frozen-lockfile --prod; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@8.6.0 --activate
 
-# Builder stage
-FROM base AS builder
-WORKDIR /app
-COPY --from=deps /app/node_modules ./node_modules
+# Copy package files and install dependencies
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+# Copy source code
 COPY . .
 
-RUN \
-  if [ -f yarn.lock ]; then yarn run build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+# Build the Next.js app with static export
+RUN pnpm run build
 
-# Runtime stage
-FROM base AS runner
-WORKDIR /app
-ENV NODE_ENV=production
-ENV PORT=3000
-ENV HOSTNAME="0.0.0.0"
+# Production stage: use nginx to serve static files
+FROM nginx:alpine AS runner
 
-# Create user and set permissions
-RUN addgroup --system --gid 1001 nodejs && \
-    adduser --system --uid 1001 nextjs && \
-    mkdir -p .next && chown -R nextjs:nodejs .next
+# Copy custom nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
 
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Copy static site to nginx public folder
+COPY --from=builder /app/out /usr/share/nginx/html
 
-USER nextjs
-EXPOSE 3000
-CMD ["node", "server.js"] 
+# Expose port 80
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]

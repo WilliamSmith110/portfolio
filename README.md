@@ -94,3 +94,138 @@ Senior Thesis: "Optimization Algorithms for Large-Scale Machine Learning"
 Email: william@example.com  
 LinkedIn: linkedin.com/in/williamsmith  
 GitHub: github.com/williamsmith
+
+# My Portfolio
+
+A modern, responsive portfolio website built with Next.js, TypeScript, and Tailwind CSS.
+
+## 🚀 CI/CD Pipeline with Docker
+
+This project includes a complete CI/CD pipeline using GitHub Actions and Docker for automated building, testing, and deployment.
+
+### 🐳 Docker Setup
+
+The project uses a multi-stage Docker build optimized for static export with nginx:
+
+```bash
+# Build the Docker image locally
+docker build -t portfolio .
+
+# Run the container
+docker run -p 80:80 portfolio
+
+# Access your portfolio at http://localhost
+```
+
+### 🔧 GitHub Actions CI/CD
+
+The CI/CD pipeline includes:
+
+1. **Test Job**: Lints code and builds the application
+2. **Build & Push Job**: Creates Docker image and pushes to Docker Hub
+3. **Deploy Job**: Provides deployment instructions
+
+#### Setup Requirements
+
+1. **Docker Hub Account**: Create an account at [Docker Hub](https://hub.docker.com/)
+
+2. **GitHub Secrets**: Add these secrets to your GitHub repository:
+   - `DOCKERHUB_USERNAME`: Your Docker Hub username
+   - `DOCKERHUB_TOKEN`: Your Docker Hub access token
+
+   To add secrets:
+   - Go to your GitHub repo → Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Add the secrets above
+
+3. **Docker Hub Token**: Generate a token at Docker Hub:
+   - Go to Docker Hub → Account Settings → Security
+   - Click "New Access Token"
+   - Copy the token and add it to GitHub secrets
+
+#### Pipeline Triggers
+
+- **Push to `main`**: Runs full CI/CD (test → build → push → deploy)
+- **Push to `develop`**: Runs tests only
+- **Pull Request to `main`**: Runs tests only
+
+#### Docker Image
+
+The pipeline creates and pushes Docker images to:
+- `williamsmith/portfolio:latest` (main branch)
+- `williamsmith/portfolio:develop` (develop branch)
+- `williamsmith/portfolio:sha-{commit}` (specific commits)
+
+### 🚀 Deployment
+
+After the pipeline runs successfully, you can deploy your portfolio:
+
+```bash
+# Pull the latest image
+docker pull williamsmith/portfolio:latest
+
+# Run the container
+docker run -d -p 80:80 --name portfolio williamsmith/portfolio:latest
+
+# Or with custom port
+docker run -d -p 8080:80 --name portfolio williamsmith/portfolio:latest
+```
+
+### 📁 Project Structure
+
+```
+my_portfolio/
+├── .github/workflows/ci-cd.yml  # GitHub Actions pipeline
+├── Dockerfile                   # Multi-stage Docker build
+├── nginx.conf                   # Nginx configuration
+├── .dockerignore               # Docker build exclusions
+├── next.config.mjs             # Next.js configuration (static export)
+└── ...                         # Other project files
+```
+
+### 🔍 Monitoring
+
+- **Health Check**: Visit `/health` endpoint for container health
+- **Logs**: Check nginx logs for debugging
+- **GitHub Actions**: Monitor pipeline status in Actions tab
+
+### 🛠️ Local Development
+
+```bash
+# Install dependencies
+pnpm install
+
+# Run development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Test Docker build locally
+docker build -t portfolio .
+docker run -p 80:80 portfolio
+```
+
+---
+
+## 🎨 Features
+
+- **Responsive Design**: Works on all devices
+- **Dark/Light Mode**: Toggle between themes
+- **Modern UI**: Built with Tailwind CSS and Radix UI
+- **Performance Optimized**: Static export with nginx
+- **SEO Friendly**: Optimized meta tags and structure
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 15
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **UI Components**: Radix UI
+- **Package Manager**: pnpm
+- **Container**: Docker with nginx
+- **CI/CD**: GitHub Actions
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
