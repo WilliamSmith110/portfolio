@@ -152,9 +152,9 @@ The CI/CD pipeline includes:
 #### Docker Image
 
 The pipeline creates and pushes Docker images to:
-- `williamsmith/portfolio:latest` (main branch)
-- `williamsmith/portfolio:develop` (develop branch)
-- `williamsmith/portfolio:sha-{commit}` (specific commits)
+- `{your-username}/portfolio:latest` (main branch)
+- `{your-username}/portfolio:develop` (develop branch)
+- `{your-username}/portfolio:sha-{commit}` (specific commits)
 
 ### 🚀 Deployment
 
@@ -162,13 +162,13 @@ After the pipeline runs successfully, you can deploy your portfolio:
 
 ```bash
 # Pull the latest image
-docker pull williamsmith/portfolio:latest
+docker pull {your-username}/portfolio:latest
 
 # Run the container
-docker run -d -p 80:80 --name portfolio williamsmith/portfolio:latest
+docker run -d -p 80:80 --name portfolio {your-username}/portfolio:latest
 
 # Or with custom port
-docker run -d -p 8080:80 --name portfolio williamsmith/portfolio:latest
+docker run -d -p 8080:80 --name portfolio {your-username}/portfolio:latest
 ```
 
 ### 📁 Project Structure
