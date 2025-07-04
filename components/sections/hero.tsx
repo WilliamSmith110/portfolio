@@ -120,7 +120,7 @@ export default function Hero() {
         transition={{ delay: 1, duration: 0.5 }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 hidden md:block"
       >
-        <Link href="#about" scroll={false}>
+        <Link href="#about" scroll={true}>
           <motion.div animate={{ y: [0, 10, 0] }} transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}>
             <Button variant="ghost" size="icon" className="rounded-full">
               <ArrowDown />

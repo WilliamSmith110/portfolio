@@ -11,7 +11,10 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "William Smith | AI Engineer",
   description: "Portfolio of William Smith, AI Engineer specializing in machine learning and deep learning solutions.",
-    generator: 'v0.dev'
+  generator: 'v0.dev',
+  icons: {
+    icon: "/logo.jpg"
+  }
 }
 
 export default function RootLayout({
