@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  DOCKER_IMAGE_NAME: williamsmith110/my-portfolio
+  DOCKER_IMAGE_NAME: thomas110/portfolio
   DOCKER_TAG: latest
 
 jobs:
