@@ -58,7 +58,7 @@ export default function Hero() {
               transition={{ delay: 0.3, duration: 0.5 }}
               className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl dark:bg-gradient-to-r from-slate-900 to-slate-700 dark:from-primary dark:to-primary/60 bg-clip-text dark:text-transparent"
             >
-              William Smith Test
+              William Smith
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
